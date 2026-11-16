@@ -6,12 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <meta name="theme-color" content="#101010">
-  <meta name="description" content="FF SENSI LAB de Yoru Studio. Genera y calibra configuraciones experimentales de sensibilidad para Free Fire y Free Fire MAX.">
+  <meta name="description" content="FF SENSI LAB de Yoru Studio. Genera y calibra sensibilidades para Free Fire y Free Fire MAX.">
 
   <title>FF SENSI LAB | Yoru Studio</title>
 
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="assets/icon-192.png" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +24,7 @@
 
   <div class="app-container">
 
-    <!-- ENCABEZADO -->
+    <!-- HEADER -->
     <header class="header">
 
       <div class="brand">
@@ -42,7 +41,7 @@
     </header>
 
 
-    <!-- PRESENTACIÓN -->
+    <!-- HERO -->
     <section class="hero">
 
       <div class="hero-line"></div>
@@ -89,7 +88,7 @@
           <strong id="deviceName">Dispositivo sin identificar</strong>
 
           <p id="deviceInfo">
-            Pulsa detectar o introduce los datos de tu teléfono manualmente.
+            Pulsa detectar o introduce los datos manualmente.
           </p>
         </div>
 
@@ -102,6 +101,7 @@
       >
         Detectar dispositivo
       </button>
+
 
       <div class="field-group">
 
@@ -121,7 +121,7 @@
         >
 
         <small>
-          Si la detección automática no encuentra tu modelo, escríbelo aquí.
+          Si no se detecta automáticamente, escribe tu modelo.
         </small>
 
       </div>
@@ -182,8 +182,8 @@
         >
 
         <small>
-          No necesitas conocer tu DPI para generar una configuración.
-          Si lo dejas vacío, no aplicaremos ningún ajuste por DPI.
+          Si no conoces este valor, déjalo vacío.
+          No asignaremos un número automáticamente.
         </small>
 
       </div>
@@ -191,7 +191,7 @@
     </section>
 
 
-    <!-- CONFIGURACIÓN DEL JUGADOR -->
+    <!-- JUGADOR -->
     <section class="panel">
 
       <div class="section-heading">
@@ -260,8 +260,8 @@
       <h2>Genera tu sensibilidad</h2>
 
       <p>
-        Analizaremos los datos que introdujiste para crear una configuración
-        experimental que puedas probar y ajustar.
+        Crearemos una configuración experimental utilizando
+        los datos que hayas proporcionado.
       </p>
 
       <button
@@ -274,8 +274,8 @@
       </button>
 
       <p class="generator-disclaimer">
-        Los resultados son recomendaciones experimentales,
-        no configuraciones oficiales ni garantías de headshots.
+        Los resultados son recomendaciones experimentales.
+        No son configuraciones oficiales ni garantizan headshots.
       </p>
 
     </section>
@@ -305,17 +305,15 @@
       </div>
 
 
-      <div class="result-grid" id="resultGrid">
-      </div>
+      <div class="result-grid" id="resultGrid"></div>
 
 
       <div class="result-warning">
         <strong>Importante</strong>
 
         <p>
-          Estos valores son un punto de partida. Pruébalos en el campo
-          de entrenamiento y realiza ajustes según tu control, pantalla
-          y respuesta del juego.
+          Estos valores son un punto de partida. Pruébalos en el
+          entrenamiento y ajústalos según tu control y dispositivo.
         </p>
       </div>
 
@@ -353,20 +351,19 @@
       <p>
         FF SENSI LAB es una herramienta independiente de Yoru Studio
         para generar y comparar configuraciones de sensibilidad.
-        Los resultados deben probarse y calibrarse individualmente.
       </p>
 
       <div class="about-line"></div>
 
       <p class="about-note">
-        No estamos afiliados con Garena ni representamos configuraciones
-        oficiales de Free Fire.
+        No estamos afiliados con Garena ni representamos
+        configuraciones oficiales de Free Fire.
       </p>
 
     </section>
 
 
-    <!-- PIE DE PÁGINA -->
+    <!-- FOOTER -->
     <footer class="footer">
 
       <div class="footer-brand">
