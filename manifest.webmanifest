@@ -1,0 +1,10 @@
+{
+  "name": "FF SENSI LAB by Yoru Studio",
+  "short_name": "FF SENSI LAB",
+  "description": "Generador experimental de sensibilidad para Free Fire.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0d0d10",
+  "theme_color": "#111114",
+  "icons": []
+}
