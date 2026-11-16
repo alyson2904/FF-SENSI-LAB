@@ -1,93 +1,389 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111114">
-  <meta name="description" content="FF SENSI LAB by Yoru Studio: generador experimental de sensibilidad para Free Fire.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#101010">
+  <meta name="description" content="FF SENSI LAB de Yoru Studio. Genera y calibra configuraciones experimentales de sensibilidad para Free Fire y Free Fire MAX.">
+
   <title>FF SENSI LAB | Yoru Studio</title>
+
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/icon-192.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css?v=3">
 </head>
+
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="FF Sensi Lab inicio">
-      <span class="brand-mark">YS</span>
-      <span><strong>FF SENSI LAB</strong><small>BY YORU STUDIO</small></span>
-    </a>
-    <span class="version">BETA 0.1</span>
-  </header>
 
-  <main class="shell">
+  <div class="app-container">
+
+    <!-- ENCABEZADO -->
+    <header class="header">
+
+      <div class="brand">
+        <div class="brand-symbol">YS</div>
+
+        <div class="brand-text">
+          <span class="brand-name">YORU STUDIO</span>
+          <span class="brand-subtitle">GAMING TOOLS</span>
+        </div>
+      </div>
+
+      <div class="version">BETA 0.3</div>
+
+    </header>
+
+
+    <!-- PRESENTACIÓN -->
     <section class="hero">
-      <p class="eyebrow">SMART SENSITIVITY GENERATOR</p>
-      <h1>Tu teléfono.<br><span>Tu sensibilidad.</span></h1>
-      <p class="muted">Crea una configuración inicial y ajústala con tus resultados de entrenamiento.</p>
+
+      <div class="hero-line"></div>
+
+      <p class="eyebrow">FREE FIRE / FREE FIRE MAX</p>
+
+      <h1>
+        FF SENSI
+        <span>LAB.</span>
+      </h1>
+
+      <p class="hero-description">
+        Configura, genera y calibra tu sensibilidad según tu dispositivo
+        y tu estilo de juego.
+      </p>
+
+      <div class="hero-status">
+        <span class="status-dot"></span>
+        SISTEMA DE CONFIGURACIÓN EXPERIMENTAL
+      </div>
+
     </section>
 
+
+    <!-- DISPOSITIVO -->
     <section class="panel">
+
       <div class="section-heading">
-        <div><p class="eyebrow">01 / DISPOSITIVO</p><h2>Configura tu teléfono</h2></div>
-        <span class="step">01</span>
+        <div>
+          <p class="section-number">01 / DISPOSITIVO</p>
+          <h2>Tu teléfono</h2>
+        </div>
+
+        <span class="section-mark">DEVICE</span>
       </div>
-      <div class="device-detect">
-        <div><strong id="deviceName">Dispositivo no detectado</strong><small id="deviceInfo">La detección automática completa llegará en la versión APK.</small></div>
-        <button id="detectBtn" class="button button-quiet" type="button">Detectar</button>
+
+      <div class="device-detection">
+
+        <div class="device-icon">
+          <span>01</span>
+        </div>
+
+        <div class="device-details">
+          <strong id="deviceName">Dispositivo sin identificar</strong>
+
+          <p id="deviceInfo">
+            Pulsa detectar o introduce los datos de tu teléfono manualmente.
+          </p>
+        </div>
+
       </div>
+
+      <button
+        type="button"
+        class="button button-secondary"
+        id="detectBtn"
+      >
+        Detectar dispositivo
+      </button>
+
+      <div class="field-group">
+
+        <label for="deviceModel">
+          Marca y modelo
+          <span class="required-label">OBLIGATORIO</span>
+        </label>
+
+        <input
+          type="text"
+          id="deviceModel"
+          name="deviceModel"
+          placeholder="Ej. Vivo Y36, Samsung A15..."
+          maxlength="80"
+          autocomplete="off"
+          required
+        >
+
+        <small>
+          Si la detección automática no encuentra tu modelo, escríbelo aquí.
+        </small>
+
+      </div>
+
+
       <div class="form-grid">
-        <label>Marca y modelo<input id="deviceModel" type="text" placeholder="Ej. Vivo V2441"></label>
-        <label>RAM
-          <select id="ram"><option value="3">3 GB o menos</option><option value="4" selected>4 GB</option><option value="6">6 GB</option><option value="8">8 GB</option><option value="12">12 GB o más</option></select>
-        </label>
-        <label>DPI / ancho mínimo
-          <input id="dpi" type="number" min="240" max="800" value="500">
-        </label>
-        <label>Frecuencia de pantalla
-          <select id="refresh"><option value="60">60 Hz</option><option value="90">90 Hz</option><option value="120" selected>120 Hz</option><option value="144">144 Hz</option></select>
-        </label>
+
+        <div class="field-group">
+
+          <label for="ram">Memoria RAM</label>
+
+          <select id="ram" name="ram" required>
+            <option value="" selected disabled>Selecciona tu RAM</option>
+            <option value="3">3 GB</option>
+            <option value="4">4 GB</option>
+            <option value="6">6 GB</option>
+            <option value="8">8 GB</option>
+            <option value="12">12 GB</option>
+          </select>
+
+        </div>
+
+
+        <div class="field-group">
+
+          <label for="refresh">Frecuencia de pantalla</label>
+
+          <select id="refresh" name="refresh" required>
+            <option value="" selected disabled>Selecciona los Hz</option>
+            <option value="60">60 Hz</option>
+            <option value="90">90 Hz</option>
+            <option value="120">120 Hz</option>
+            <option value="144">144 Hz</option>
+          </select>
+
+        </div>
+
       </div>
-      <p class="hint">El navegador no puede leer de forma fiable todos los datos Android. En esta beta puedes introducirlos manualmente.</p>
+
+
+      <!-- DPI OPCIONAL -->
+      <div class="field-group dpi-field">
+
+        <div class="label-row">
+          <label for="dpi">DPI / Ancho mínimo</label>
+          <span class="optional-label">OPCIONAL</span>
+        </div>
+
+        <input
+          type="number"
+          id="dpi"
+          name="dpi"
+          min="240"
+          max="800"
+          step="1"
+          placeholder="Déjalo vacío si no lo conoces"
+          inputmode="numeric"
+        >
+
+        <small>
+          No necesitas conocer tu DPI para generar una configuración.
+          Si lo dejas vacío, no aplicaremos ningún ajuste por DPI.
+        </small>
+
+      </div>
+
     </section>
 
+
+    <!-- CONFIGURACIÓN DEL JUGADOR -->
     <section class="panel">
+
       <div class="section-heading">
-        <div><p class="eyebrow">02 / JUGADOR</p><h2>Tu forma de jugar</h2></div>
-        <span class="step">02</span>
+        <div>
+          <p class="section-number">02 / JUGADOR</p>
+          <h2>Tu estilo de juego</h2>
+        </div>
+
+        <span class="section-mark">PLAYER</span>
       </div>
-      <div class="form-grid">
-        <label>Versión del juego
-          <select id="game"><option value="both">Free Fire y MAX</option><option value="normal">Free Fire</option><option value="max">Free Fire MAX</option></select>
-        </label>
-        <label>Dedos
-          <select id="fingers"><option value="2" selected>2 dedos</option><option value="3">3 dedos</option><option value="4">4 dedos</option></select>
-        </label>
-        <label class="full">Estilo principal
-          <select id="style"><option value="all">Todos los estilos</option><option value="headshot">Todo rojo / headshots</option><option value="rush">Rushear / corta distancia</option><option value="balanced">Equilibrado</option><option value="range">Media y larga distancia</option></select>
-        </label>
+
+
+      <div class="field-group">
+
+        <label for="game">Versión del juego</label>
+
+        <select id="game" name="game" required>
+          <option value="" selected disabled>Selecciona tu juego</option>
+          <option value="normal">Free Fire</option>
+          <option value="max">Free Fire MAX</option>
+          <option value="both">Ambos</option>
+        </select>
+
       </div>
-      <button id="generateBtn" class="button button-primary" type="button">GENERAR MI SENSIBILIDAD <span>↗</span></button>
+
+
+      <div class="field-group">
+
+        <label for="fingers">Cantidad de dedos</label>
+
+        <select id="fingers" name="fingers" required>
+          <option value="" selected disabled>Selecciona tus dedos</option>
+          <option value="2">2 dedos</option>
+          <option value="3">3 dedos</option>
+          <option value="4">4 dedos</option>
+        </select>
+
+      </div>
+
+
+      <div class="field-group">
+
+        <label for="style">Estilo de juego</label>
+
+        <select id="style" name="style" required>
+          <option value="" selected disabled>Selecciona tu estilo</option>
+          <option value="all">Todos los estilos</option>
+          <option value="headshot">Todo rojo / Headshots</option>
+          <option value="rush">Rushear / Agresivo</option>
+          <option value="balanced">Equilibrado</option>
+          <option value="range">Larga distancia</option>
+        </select>
+
+      </div>
+
     </section>
 
-    <section id="results" class="panel results" hidden>
+
+    <!-- GENERADOR -->
+    <section class="generator-section">
+
+      <div class="generator-decoration"></div>
+
+      <p class="section-number">03 / GENERADOR</p>
+
+      <h2>Genera tu sensibilidad</h2>
+
+      <p>
+        Analizaremos los datos que introdujiste para crear una configuración
+        experimental que puedas probar y ajustar.
+      </p>
+
+      <button
+        type="button"
+        class="button button-primary"
+        id="generateBtn"
+      >
+        GENERAR SENSIBILIDAD
+        <span class="button-arrow">→</span>
+      </button>
+
+      <p class="generator-disclaimer">
+        Los resultados son recomendaciones experimentales,
+        no configuraciones oficiales ni garantías de headshots.
+      </p>
+
+    </section>
+
+
+    <!-- RESULTADOS -->
+    <section class="panel results-panel" id="results" hidden>
+
       <div class="section-heading">
-        <div><p class="eyebrow">03 / RESULTADO</p><h2>Tu configuración inicial</h2></div>
-        <span class="live-dot">● CALCULADA</span>
+
+        <div>
+          <p class="section-number">04 / RESULTADOS</p>
+          <h2>Tu configuración</h2>
+        </div>
+
+        <span class="result-indicator">GENERADA</span>
+
       </div>
-      <div class="result-grid" id="resultGrid"></div>
-      <p class="hint" id="resultNote"></p>
-      <div class="actions">
-        <button id="copyBtn" class="button button-primary" type="button">Copiar configuración</button>
-        <button id="retestBtn" class="button button-quiet" type="button">Volver a ajustar</button>
+
+
+      <div class="result-intro">
+        <p>PERFIL DE SENSIBILIDAD</p>
+
+        <small id="resultNote">
+          Tu configuración aparecerá aquí.
+        </small>
       </div>
+
+
+      <div class="result-grid" id="resultGrid">
+      </div>
+
+
+      <div class="result-warning">
+        <strong>Importante</strong>
+
+        <p>
+          Estos valores son un punto de partida. Pruébalos en el campo
+          de entrenamiento y realiza ajustes según tu control, pantalla
+          y respuesta del juego.
+        </p>
+      </div>
+
+
+      <div class="result-actions">
+
+        <button
+          type="button"
+          class="button button-primary"
+          id="copyBtn"
+        >
+          Copiar configuración
+        </button>
+
+        <button
+          type="button"
+          class="button button-secondary"
+          id="retestBtn"
+        >
+          Modificar mi perfil
+        </button>
+
+      </div>
+
     </section>
 
-    <section class="disclaimer">
-      <strong>Nota de calibración</strong>
-      <p>Los valores son un punto de partida experimental, no una fórmula oficial ni una garantía de hacer headshots. La respuesta cambia según HUD, control táctil, FPS, actualización del juego y preferencias. Prueba en entrenamiento y modifica de 3 a 5 puntos por vez.</p>
-    </section>
-  </main>
 
-  <footer>YORU STUDIO <span>·</span> FF SENSI LAB</footer>
-  <script src="js/app.js"></script>
+    <!-- INFORMACIÓN -->
+    <section class="about-section">
+
+      <p class="section-number">INFORMACIÓN</p>
+
+      <h2>Diseñado para experimentar.</h2>
+
+      <p>
+        FF SENSI LAB es una herramienta independiente de Yoru Studio
+        para generar y comparar configuraciones de sensibilidad.
+        Los resultados deben probarse y calibrarse individualmente.
+      </p>
+
+      <div class="about-line"></div>
+
+      <p class="about-note">
+        No estamos afiliados con Garena ni representamos configuraciones
+        oficiales de Free Fire.
+      </p>
+
+    </section>
+
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer">
+
+      <div class="footer-brand">
+        YORU <span>STUDIO</span>
+      </div>
+
+      <p>FF SENSI LAB · BETA 0.3</p>
+
+      <p>CREADO PARA LA COMUNIDAD GAMING</p>
+
+    </footer>
+
+  </div>
+
+
+  <!-- JAVASCRIPT -->
+  <script src="js/app.js?v=3"></script>
+
 </body>
 </html>
