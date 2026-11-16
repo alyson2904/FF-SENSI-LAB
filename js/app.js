@@ -3,15 +3,13 @@
 
 /* ==========================================
    FF SENSI LAB — YORU STUDIO
-   Beta 0.3
-   Generador con validación de dispositivo
+   Version: Beta 0.3
 ========================================== */
 
 const $ = (id) => document.getElementById(id);
 
 let currentSensitivity = null;
 let currentDevice = null;
-let detectionCompleted = false;
 
 /* ==========================================
    1. UTILIDADES
@@ -39,6 +37,7 @@ function setText(id, value) {
   if (element) element.textContent = value;
 }
 
+
 /* ==========================================
    2. DETECCIÓN DEL DISPOSITIVO
 ========================================== */
@@ -52,7 +51,7 @@ async function readDeviceInfo() {
   }
 
   setText("deviceName", "Buscando dispositivo...");
-  setText("deviceInfo", "Consultando los datos que permite el navegador.");
+  setText("deviceInfo", "Consultando información disponible.");
 
   try {
     const ua = navigator.userAgent || "";
@@ -62,7 +61,6 @@ async function readDeviceInfo() {
     let platform = "No identificada";
     let browser = "Navegador no identificado";
 
-    // Información básica del navegador.
     const androidMatch = ua.match(/Android\s([\d.]+)/i);
 
     if (androidMatch) {
@@ -72,8 +70,7 @@ async function readDeviceInfo() {
       platform = "iOS";
     }
 
-    // Intentar obtener el modelo real.
-    // Algunos navegadores ocultan esta información.
+    // Información avanzada, si el navegador la permite.
     if (
       navigator.userAgentData &&
       typeof navigator.userAgentData.getHighEntropyValues === "function"
@@ -93,12 +90,13 @@ async function readDeviceInfo() {
         if (data.platformVersion) {
           androidVersion = data.platformVersion;
         }
+
       } catch (error) {
-        console.warn("El navegador no permitió obtener el modelo:", error);
+        console.warn("Información avanzada no disponible:", error);
       }
     }
 
-    // Identificar el navegador, no el fabricante del teléfono.
+    // Navegador.
     if (/EdgA/i.test(ua)) {
       browser = "Microsoft Edge";
     } else if (/Firefox/i.test(ua)) {
@@ -117,22 +115,18 @@ async function readDeviceInfo() {
       screen.height * (window.devicePixelRatio || 1)
     );
 
-    // La memoria del navegador es aproximada, no la RAM física exacta.
+    // Memoria aproximada expuesta por el navegador.
     const memory = navigator.deviceMemory || null;
 
     const touchPoints = navigator.maxTouchPoints || 0;
 
-    // No borrar un modelo que el usuario haya escrito.
-    const modelInput = $("deviceModel");
-
-    if (model && modelInput) {
-      modelInput.value = model;
+    // Completar el campo únicamente si se detectó un modelo.
+    if (model && $("deviceModel")) {
+      $("deviceModel").value = model;
     }
 
-    const manualModel = getValue("deviceModel");
-
     currentDevice = {
-      model: model || manualModel || "",
+      model: model,
       platform,
       androidVersion,
       width,
@@ -145,6 +139,7 @@ async function readDeviceInfo() {
 
     if (model) {
       setText("deviceName", model);
+
       setText(
         "deviceInfo",
         `Modelo detectado · ${platform} · Versión ${androidVersion} · ` +
@@ -152,28 +147,28 @@ async function readDeviceInfo() {
         `RAM del navegador: ${memory ? memory + " GB aprox." : "No disponible"} · ` +
         `${browser}`
       );
+
     } else {
       setText("deviceName", "Modelo no identificado");
+
       setText(
         "deviceInfo",
-        `El navegador no pudo identificar el modelo. ` +
-        `Plataforma: ${platform} · ${width} × ${height} px · ` +
-        `RAM: ${memory ? memory + " GB aprox. (estimada)" : "No disponible"} · ` +
-        `${browser}. Escribe tu modelo manualmente.`
+        `El navegador no pudo identificar tu modelo. ` +
+        `${platform} · ${width} × ${height} px · ` +
+        `RAM: ${memory ? memory + " GB aprox." : "No disponible"} · ` +
+        `${browser}. Escríbelo manualmente.`
       );
     }
 
-    detectionCompleted = true;
-
-    console.log("FF SENSI LAB - Detección:", currentDevice);
+    console.log("FF SENSI LAB - Dispositivo:", currentDevice);
 
   } catch (error) {
     console.error("Error de detección:", error);
 
     currentDevice = null;
-    detectionCompleted = false;
 
     setText("deviceName", "No se pudo detectar");
+
     setText(
       "deviceInfo",
       "Introduce manualmente la marca y el modelo de tu teléfono."
@@ -187,8 +182,9 @@ async function readDeviceInfo() {
   }
 }
 
+
 /* ==========================================
-   3. VALIDAR LOS DATOS
+   3. VALIDACIÓN DEL PERFIL
 ========================================== */
 
 function validateDevice() {
@@ -196,8 +192,7 @@ function validateDevice() {
 
   if (!model) {
     showMessage(
-      "Primero escribe la marca y el modelo de tu teléfono. " +
-      "No podemos generar una configuración personalizada sin ese dato."
+      "Primero escribe la marca y el modelo de tu teléfono."
     );
 
     $("deviceModel")?.focus();
@@ -205,7 +200,6 @@ function validateDevice() {
   }
 
   const ram = getValue("ram");
-  const refresh = getValue("refresh");
 
   if (!ram) {
     showMessage("Selecciona la memoria RAM de tu dispositivo.");
@@ -213,8 +207,10 @@ function validateDevice() {
     return false;
   }
 
+  const refresh = getValue("refresh");
+
   if (!refresh) {
-    showMessage("Selecciona la frecuencia de pantalla de tu dispositivo.");
+    showMessage("Selecciona la frecuencia de tu pantalla.");
     $("refresh")?.focus();
     return false;
   }
@@ -222,19 +218,23 @@ function validateDevice() {
   const fingers = getValue("fingers");
 
   if (!fingers) {
-    showMessage("Selecciona cuántos dedos utilizas para jugar.");
+    showMessage("Selecciona cuántos dedos utilizas.");
     $("fingers")?.focus();
     return false;
   }
 
-  if (!getValue("style")) {
+  const style = getValue("style");
+
+  if (!style) {
     showMessage("Selecciona tu estilo de juego.");
     $("style")?.focus();
     return false;
   }
 
-  if (!getValue("game")) {
-    showMessage("Selecciona la versión de Free Fire que utilizas.");
+  const game = getValue("game");
+
+  if (!game) {
+    showMessage("Selecciona tu versión de Free Fire.");
     $("game")?.focus();
     return false;
   }
@@ -242,19 +242,24 @@ function validateDevice() {
   return true;
 }
 
+
 /* ==========================================
-   4. ALGORITMO DE SENSIBILIDAD
+   4. GENERADOR DE SENSIBILIDAD
 ========================================== */
 
 function calculateSensitivity() {
-  if (!validateDevice()) return null;
+  if (!validateDevice()) {
+    return null;
+  }
 
   const model = getValue("deviceModel");
 
+  // DPI opcional.
   const dpiInput = getValue("dpi");
 
-  // DPI opcional: vacío significa que no se conoce.
-  const dpi = dpiInput === "" ? null : Number(dpiInput);
+  const dpi = dpiInput === ""
+    ? null
+    : Number(dpiInput);
 
   const refresh = Number(getValue("refresh"));
   const ram = Number(getValue("ram"));
@@ -263,30 +268,17 @@ function calculateSensitivity() {
   const style = getValue("style");
   const game = getValue("game");
 
-  if (dpi !== null && (!Number.isFinite(dpi) || dpi < 240 || dpi > 800)) {
-    showMessage("El DPI debe estar entre 240 y 800, o puedes dejarlo vacío.");
+  if (
+    dpi !== null &&
+    (!Number.isFinite(dpi) || dpi < 240 || dpi > 800)
+  ) {
+    showMessage(
+      "El DPI debe estar entre 240 y 800, o puedes dejarlo vacío."
+    );
+
     $("dpi")?.focus();
     return null;
   }
-
-  if (!Number.isFinite(refresh) || refresh <= 0) {
-    showMessage("Selecciona una frecuencia de pantalla válida.");
-    return null;
-  }
-
-  if (!Number.isFinite(ram) || ram <= 0) {
-    showMessage("Selecciona una cantidad de RAM válida.");
-    return null;
-  }
-
-  /*
-    IMPORTANTE:
-    Los factores son experimentales.
-    No representan una fórmula oficial de Garena.
-
-    Si no se conoce el DPI, no se inventa uno.
-    En ese caso no se aplica ajuste por DPI.
-  */
 
   const dpiFactor = dpi === null
     ? 0
@@ -302,6 +294,7 @@ function calculateSensitivity() {
     fingers === 2 ? 3 :
     fingers === 3 ? 0 : -2;
 
+  // Valores base experimentales.
   const base = {
     general: 186,
     redDot: 178,
@@ -311,6 +304,7 @@ function calculateSensitivity() {
     freeLook: 155
   };
 
+  // Ajustes según el estilo.
   const styles = {
     all: {
       general: 0,
@@ -358,7 +352,7 @@ function calculateSensitivity() {
     }
   };
 
-  const adjustment = styles[style] || styles.all;
+  const adjustment = styles[style];
 
   const shared =
     dpiFactor * 1.2 +
@@ -371,7 +365,8 @@ function calculateSensitivity() {
     ),
 
     "Punto rojo": clamp(
-      base.redDot + shared + fingerFactor * 0.7 + adjustment.redDot
+      base.redDot + shared + fingerFactor * 0.7 +
+      adjustment.redDot
     ),
 
     "Mira 2X": clamp(
@@ -389,7 +384,8 @@ function calculateSensitivity() {
     ),
 
     "Vista libre": clamp(
-      base.freeLook + (dpi === null ? 0 : dpiFactor * 0.4) +
+      base.freeLook +
+      (dpi === null ? 0 : dpiFactor * 0.4) +
       adjustment.freeLook
     )
   };
@@ -405,11 +401,11 @@ function calculateSensitivity() {
       fingers,
       style,
       game,
-      dpiKnown: dpi !== null,
-      detectionCompleted
+      dpiKnown: dpi !== null
     }
   };
 }
+
 
 /* ==========================================
    5. MOSTRAR RESULTADOS
@@ -424,11 +420,12 @@ function generateSensitivity() {
   const results = $("results");
 
   if (!resultGrid || !results) {
-    showMessage("No se encontró el área de resultados. Revisa index.html.");
+    showMessage("No se encontró el área de resultados.");
     return;
   }
 
   currentSensitivity = calculated;
+
   resultGrid.innerHTML = "";
 
   Object.entries(calculated.values).forEach(([name, value]) => {
@@ -443,6 +440,7 @@ function generateSensitivity() {
 
     card.appendChild(label);
     card.appendChild(number);
+
     resultGrid.appendChild(card);
   });
 
@@ -450,18 +448,16 @@ function generateSensitivity() {
 
   const dpiText = meta.dpiKnown
     ? `${meta.dpi} DPI`
-    : "DPI no especificado (sin ajuste por DPI)";
-
-  const ramText = `${meta.ram} GB RAM`;
+    : "DPI no especificado";
 
   const note = $("resultNote");
 
   if (note) {
     note.textContent =
-      `${meta.model} · ${dpiText} · ${ramText} · ` +
-      `${meta.refresh} Hz · ${meta.fingers} dedos · ` +
-      `${getSelectedText("game")}. ` +
-      "Configuración experimental: pruébala y calibra según tu control.";
+      `${meta.model} · ${dpiText} · ` +
+      `${meta.ram} GB RAM · ${meta.refresh} Hz · ` +
+      `${meta.fingers} dedos · ${getSelectedText("game")}. ` +
+      "Configuración experimental para calibrar.";
   }
 
   results.hidden = false;
@@ -473,6 +469,7 @@ function generateSensitivity() {
 
   console.log("FF SENSI LAB - Resultado:", currentSensitivity);
 }
+
 
 /* ==========================================
    6. COPIAR CONFIGURACIÓN
@@ -503,8 +500,10 @@ async function copySensitivity() {
   try {
     if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(textToCopy);
+
     } else {
       const area = document.createElement("textarea");
+
       area.value = textToCopy;
       area.style.position = "fixed";
       area.style.left = "-9999px";
@@ -513,15 +512,19 @@ async function copySensitivity() {
       area.select();
 
       const copied = document.execCommand("copy");
+
       area.remove();
 
-      if (!copied) throw new Error("No se pudo copiar");
+      if (!copied) {
+        throw new Error("No se pudo copiar");
+      }
     }
 
     const button = $("copyBtn");
 
     if (button) {
       const originalText = button.textContent;
+
       button.textContent = "¡Configuración copiada!";
 
       setTimeout(() => {
@@ -531,9 +534,11 @@ async function copySensitivity() {
 
   } catch (error) {
     console.error("Error al copiar:", error);
+
     showMessage("No se pudo copiar. Intenta nuevamente.");
   }
 }
+
 
 /* ==========================================
    7. EVENTOS
@@ -559,17 +564,23 @@ function initializeApp() {
 
   if (retestBtn) {
     retestBtn.addEventListener("click", () => {
-      if ($("style")) $("style").focus();
-      if ($("results")) $("results").hidden = true;
+      if ($("style")) {
+        $("style").focus();
+      }
+
+      if ($("results")) {
+        $("results").hidden = true;
+      }
     });
   }
 
-  // No se inventa el modelo al iniciar.
+  // Intentar detectar el dispositivo al abrir.
   readDeviceInfo();
 }
 
+
 /* ==========================================
-   8. INICIAR
+   8. INICIAR APLICACIÓN
 ========================================== */
 
 if (document.readyState === "loading") {
